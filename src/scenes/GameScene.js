@@ -12,12 +12,16 @@ export default class GameScene extends Phaser.Scene {
     this.load.image("panda", "/panda.png");
     this.load.image("panda-smile", "/panda-smile1.png");
     this.load.image("panda-sad", "/panda-sad.png");
+    this.load.image("soup-icon", "/soup-icon.png");
+    this.load.image("noodle-icon", "/noodle.png");
 
     this.ingredientSequence = [
       "cooking-oil", "ginger", "mushrooms", "baby-corn", "carrot", "cabbage",
       "capsicum", "beansprouts", "soy-sauce", "tomato-ketchup", "chilli-sauce",
       "black-pepper", "salt", "noodle", "noodle", "noodle"
     ];
+
+    Phaser.Utils.Array.Shuffle(this.ingredientSequence);
 
     this.ingredientSequence.forEach((item) => {
       this.load.image(item, `/${item}.png`);
@@ -44,9 +48,68 @@ export default class GameScene extends Phaser.Scene {
       true
     );
 
-    this.itemsGroup = this.physics.add.group();
+    this.add.image(180, 80, "soup-icon").setScale(0.08).setScrollFactor(0);
+    this.add.image(180, 140, "noodle-icon").setScale(0.06).setScrollFactor(0);
 
-    this.spawnNextItem(); // Start first drop
+    this.soupBar = this.add.graphics();
+    this.noodleBar = this.add.graphics();
+
+    this.updateProgressBars();
+
+    this.itemsGroup = this.physics.add.group(); 
+
+    // this.spawnNextItem(); // Start first drop
+    this.startCountdownBeforeGame();
+  }
+
+  startCountdownBeforeGame() {
+    this.countdownText = this.add.text(240, 400, "3", {
+      fontSize: "64px",
+      fill: "#fff",
+      fontFamily: "Arial",
+      stroke: "#000",
+      strokeThickness: 6
+    }).setOrigin(0.5);
+  
+    let countdown = 3;
+  
+    this.countdownTimer = this.time.addEvent({
+      delay: 1000,
+      repeat: 2, // total 3 times
+      callback: () => {
+        countdown--;
+        if (countdown > 0) {
+          this.countdownText.setText(countdown.toString());
+        } else {
+          this.countdownText.destroy();
+          this.spawnNextItem();
+        }
+      }
+    });
+  }
+  
+  updateProgressBars() {
+    const maxSoup = 6;
+    const maxNoodle = 3;
+
+    const soupRatio = Math.min(this.totalIngredientsCaught / maxSoup, 1);
+    const noodleRatio = Math.min(this.noodlesCaught / maxNoodle, 1);
+
+    this.soupBar.clear();
+    this.soupBar.fillStyle(0x00ff00, 1);
+    this.soupBar.fillRect(220, 78, 100 * soupRatio, 10);
+
+    this.noodleBar.clear();
+    this.noodleBar.fillStyle(0x00ff00, 1);
+    this.noodleBar.fillRect(220, 138, 100 * noodleRatio, 10);
+
+    if (soupRatio === 1 && !this.soupGlow) {
+      this.soupGlow = this.addGlowBar(220, 78, 100, 10);
+    }
+    
+    if (noodleRatio === 1 && !this.noodleGlow) {
+      this.noodleGlow = this.addGlowBar(220, 138, 100, 10);
+    }    
   }
 
   spawnNextItem() {
@@ -131,27 +194,26 @@ export default class GameScene extends Phaser.Scene {
     this.time.delayedCall(500, () => {
       this.panda.setTexture("panda");
     });
+
+    this.updateProgressBars();
   }
 
   handleMiss(item) {
     const type = item.getData("type");
     item.destroy();
-  
-    if (type === "noodle") {
 
-      this.panda.setTexture("panda-sad");
-      this.panda.setScale(0.25);
+    this.panda.setTexture("panda-sad");
+    this.panda.setScale(0.25);
 
-      this.panda.body.setSize(
-        this.panda.width * 0.6,
-        this.panda.height * 0.8,
-        true
-      );
+    this.panda.body.setSize(
+      this.panda.width * 0.6,
+      this.panda.height * 0.8,
+      true
+    );
   
-      this.time.delayedCall(500, () => {
-        this.panda.setTexture("panda");
-      });
-    }
+    this.time.delayedCall(500, () => {
+    this.panda.setTexture("panda");
+    });
   }  
 
   endGameCheck() {
@@ -166,4 +228,21 @@ export default class GameScene extends Phaser.Scene {
       ingredientsCaught: this.totalIngredientsCaught,
     });
   }
+
+  addGlowBar(x, y, width, height) {
+    const glow = this.add.graphics();
+    glow.lineStyle(5, 0xffffff, 0.7);
+    glow.strokeRect(x, y, width, height);
+  
+    this.tweens.add({
+      targets: glow,
+      alpha: { from: 0.7, to: 0.1 },
+      duration: 800,
+      yoyo: true,
+      repeat: -1,
+      ease: "Sine.easeInOut"
+    });
+  
+    return glow;
+  }  
 }
