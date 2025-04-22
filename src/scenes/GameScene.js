@@ -220,7 +220,7 @@ export default class GameScene extends Phaser.Scene {
     gameOver = true;
 
     const isHappyEnding =
-      this.noodlesCaught === 3 && this.totalIngredientsCaught >= 6;
+      this.noodlesCaught === 3 && this.totalIngredientsCaught >= 8;
 
     this.scene.start("EndScene", {
       isHappy: isHappyEnding,
