@@ -222,10 +222,14 @@ export default class GameScene extends Phaser.Scene {
     const isHappyEnding =
       this.noodlesCaught === 3 && this.totalIngredientsCaught >= 8;
 
-    this.scene.start("EndScene", {
-      isHappy: isHappyEnding,
-      noodlesCaught: this.noodlesCaught,
-      ingredientsCaught: this.totalIngredientsCaught,
+    this.cameras.main.fadeOut(500, 255, 255, 255); // white fade
+
+    this.time.delayedCall(500, () => {
+      this.scene.start("EndScene", {
+        isHappy: isHappyEnding,
+        noodlesCaught: this.noodlesCaught,
+        ingredientsCaught: this.totalIngredientsCaught,
+      });
     });
   }
 
