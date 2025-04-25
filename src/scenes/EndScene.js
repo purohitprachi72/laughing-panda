@@ -16,95 +16,97 @@ export default class EndScene extends Phaser.Scene {
     this.load.image("happy-eating", "/happy-eating.png");
     this.load.image("sad-rainy", "/sad-rainy.png");
     this.load.image("sad-windy", "/sad-windy.png");
+    this.load.image("perfect-text", "/perfect-text.png");
+    this.load.image("rainy-text", "/rainy-text.png");
+    this.load.image("windy-text", "/windy-text.png");
   }
 
   create() {
-    // test code
-    // this.isHappy = true;
-    // this.noodlesCaught = 3;
-    // this.ingredientsCaught = 2;
 
-    this.cameras.main.fadeIn(500, 255, 255, 255); // White fade-in
-  
-    this.add.image(0, 0, "background").setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
-  
-    let message = "";
+    // test code
+    // this.isHappy = false;
+    // this.noodlesCaught = 2;
+    // this.ingredientsCaught = 8;
+
+    this.cameras.main.fadeIn(1000, 255, 255, 255); // white fade in
+
+    this.add.image(0, 0, "background")
+      .setOrigin(0, 0)
+      .setDisplaySize(this.scale.width, this.scale.height);
+
     let imageKey = "";
-  
+    let textImageKey = "";
+
     if (this.isHappy) {
-      message = "You made the perfect bowl! 🍜✨";
       imageKey = "happy-eating";
+      textImageKey = "perfect-text";
     } else if (this.noodlesCaught < 3) {
-      message = "Oh no! You did not collect all the noodles :(";
       imageKey = "sad-rainy";
+      textImageKey = "rainy-text";
     } else {
-      message = "Uh-oh! You did not collect enough veggies :(";
       imageKey = "sad-windy";
+      textImageKey = "windy-text";
     }
-    
-    const text = this.add.text(240, 100, message, {
-      fontSize: "24px",
-      fill: "#fff",
-      fontFamily: "Comic Sans MS",
-      stroke: "#000",
-      strokeThickness: 4,
-    }).setOrigin(0.5).setAlpha(0);
-    
+
+    const textBanner = this.add.image(250, 50, textImageKey)
+      .setScale(0.25)
+      .setOrigin(0.5)
+      .setAlpha(0);
+
     this.tweens.add({
-      targets: text,
-      y: 100,
+      targets: textBanner,
+      y: 150,
       alpha: 1,
       ease: "Bounce.easeOut",
-      delay: 300,
-      duration: 800
+      delay: 500,
+      duration: 1000,
     });
 
-    const panda = this.add.image(240, 550, imageKey).setScale(0.4).setOrigin(0.5).setAlpha(0);
+    const panda = this.add.image(240, 550, imageKey)
+      .setScale(0.4)
+      .setOrigin(0.5)
+      .setAlpha(0);
 
-    this.time.delayedCall(800, () => {
+    this.time.delayedCall(1600, () => {
       this.tweens.add({
         targets: panda,
         alpha: 1,
-        duration: 800
+        duration: 1000,
       });
     });
-    
-    const replayBtn = this.add.text(240, 250, "▶ Replay", {
+
+    const replayBtn = this.add.text(240, 260, "▶ Replay", {
       fontSize: "28px",
       fill: "#ffffff",
       fontFamily: "Arial",
       backgroundColor: "#00c853",
       padding: { x: 20, y: 10 },
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setAlpha(0);
-  
+    }).setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .setAlpha(0);
+
     const homeBtn = this.add.text(240, 320, "🏠 Home", {
       fontSize: "24px",
       fill: "#ffffff",
       fontFamily: "Arial",
       backgroundColor: "#2962ff",
       padding: { x: 20, y: 8 },
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setAlpha(0);
+    }).setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .setAlpha(0);
 
-    this.time.delayedCall(1800, () => {
+    this.time.delayedCall(2800, () => {
       this.tweens.add({
         targets: [replayBtn, homeBtn],
         alpha: 1,
-        duration: 600
+        duration: 600,
       });
     });
-  
-    this.time.delayedCall(500, () => {
-      this.tweens.add({ targets: [text, panda], alpha: 1, duration: 600 });
-    });
-  
-    this.time.delayedCall(1100, () => {
-      this.tweens.add({ targets: [replayBtn, homeBtn], alpha: 1, duration: 600 });
-    });
-  
+
     replayBtn.on("pointerdown", () => {
       this.scene.start("GameScene");
     });
-  
+
     homeBtn.on("pointerdown", () => {
       this.scene.start("TitleScene");
     });
