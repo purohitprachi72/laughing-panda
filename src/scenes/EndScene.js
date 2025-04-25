@@ -24,7 +24,7 @@ export default class EndScene extends Phaser.Scene {
   create() {
 
     // test code
-    // this.isHappy = false;
+    // this.isHappy = true;
     // this.noodlesCaught = 2;
     // this.ingredientsCaught = 8;
 
