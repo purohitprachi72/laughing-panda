@@ -12,13 +12,13 @@ export default class EndScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "/background1.png");
-    this.load.image("happy-eating", "/happy-eating.png");
-    this.load.image("sad-rainy", "/sad-rainy.png");
-    this.load.image("sad-windy", "/sad-windy.png");
-    this.load.image("perfect-text", "/perfect-text.png");
-    this.load.image("rainy-text", "/rainy-text.png");
-    this.load.image("windy-text", "/windy-text.png");
+    this.load.image("background", "background1.png");
+    this.load.image("happy-eating", "happy-eating.png");
+    this.load.image("sad-rainy", "sad-rainy.png");
+    this.load.image("sad-windy", "sad-windy.png");
+    this.load.image("perfect-text", "perfect-text.png");
+    this.load.image("rainy-text", "rainy-text.png");
+    this.load.image("windy-text", "windy-text.png");
   }
 
   create() {

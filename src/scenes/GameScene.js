@@ -8,12 +8,12 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "/background1.png");
-    this.load.image("panda", "/panda.png");
-    this.load.image("panda-smile", "/panda-smile1.png");
-    this.load.image("panda-sad", "/panda-sad.png");
-    this.load.image("soup-icon", "/soup-icon.png");
-    this.load.image("noodle-icon", "/noodle.png");
+    this.load.image("background", "background1.png");
+    this.load.image("panda", "panda.png");
+    this.load.image("panda-smile", "panda-smile1.png");
+    this.load.image("panda-sad", "panda-sad.png");
+    this.load.image("soup-icon", "soup-icon.png");
+    this.load.image("noodle-icon", "noodle.png");
 
     this.ingredientSequence = [
       "cooking-oil", "ginger", "mushrooms", "baby-corn", "carrot", "cabbage",
@@ -24,7 +24,7 @@ export default class GameScene extends Phaser.Scene {
     Phaser.Utils.Array.Shuffle(this.ingredientSequence);
 
     this.ingredientSequence.forEach((item) => {
-      this.load.image(item, `/${item}.png`);
+      this.load.image(item, `${item}.png`);
     });
   }
 

@@ -7,11 +7,11 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "/background1.png");
-    this.load.image("pandaIntro", "/panda-intro.png");
-    this.load.image("settings", "/settings.png");
-    this.load.image("title-img", "/title-img.png"); // 🎯 Title image
-    this.load.audio("bgMusic", "/audio_hero_Yellow-Cafe_SIPML_C-0361.mp3");
+    this.load.image("background", "background1.png");
+    this.load.image("pandaIntro", "panda-intro.png");
+    this.load.image("settings", "settings.png");
+    this.load.image("title-img", "title-img.png"); // 🎯 Title image
+    this.load.audio("bgMusic", "audio_hero_Yellow-Cafe_SIPML_C-0361.mp3");
   }
 
   create() {
